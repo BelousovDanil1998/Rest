@@ -13,7 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class securityConfig extends WebSecurityConfigurerAdapter {
 
-   private final LoginSuccessHandler loginSuccessHandler;
+    private final LoginSuccessHandler loginSuccessHandler;
     private final CustomUserDetailsService customUserDetailsService;
 
     public securityConfig(LoginSuccessHandler loginSuccessHandler, CustomUserDetailsService customUserDetailsService) {
@@ -23,21 +23,18 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        // конфигурируем сам Spring Security
-        // конфигурируем авторизацию
-       http.csrf().disable()
-                // делаем страницу регистрации недоступной для авторизированных пользователей
+
+        http.csrf().disable()
                 .authorizeRequests()
-                //страницы аутентификаци доступна всем
-                .antMatchers("/auth/login","/auth/registration").permitAll()
+                //страницы аутентификации доступна всем
+                .antMatchers("/auth/login", "/auth/registration").permitAll()
                 // защищенные URL
                 .antMatchers("/admin/**").access("hasAuthority('ADMIN')")
-                .antMatchers("/user/**").access("hasAuthority('USER')")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/auth/login")
                 .loginProcessingUrl("/login")
-               .successHandler(loginSuccessHandler)
+                .successHandler(loginSuccessHandler)
                 .failureUrl("/auth/login?error")
                 .and()
                 .logout()

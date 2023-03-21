@@ -10,9 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashSet;
 
 
-/**
- * @author Neil Alishev
- */
 @Service
 public class RegistrationService {
 
@@ -26,6 +23,7 @@ public class RegistrationService {
     @Transactional
     public void register(User user) {
         HashSet<Role> roleHashSet = new HashSet<>();
+        roleHashSet.add(new Role("USER"));
         roleHashSet.add(new Role("ADMIN"));
         user.setRoles(roleHashSet);
         peopleRepository.save(user);

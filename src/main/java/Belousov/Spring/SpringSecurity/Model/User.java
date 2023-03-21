@@ -1,12 +1,16 @@
 package Belousov.Spring.SpringSecurity.Model;
 
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,15 +22,22 @@ public class User {
     @Column(nullable = false, length = 64)
     private String password;
 
-    @Column(name = "first_name", nullable = false, length = 20)
+    @Column(nullable = false, length = 20)
     private String firstName;
 
-    @Column(name = "last_name", nullable = false, length = 20)
-    private String lastName;
 
-    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Role> roles;
 
+    public User(String email, String password, String firstName) {
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+    }
+
+    public User() {
+
+    }
 
     public Long getId() {
         return id;
@@ -44,12 +55,42 @@ public class User {
         this.email = email;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles;
+    }
+
     public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     public String getFirstName() {
@@ -60,13 +101,6 @@ public class User {
         this.firstName = firstName;
     }
 
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
 
     public Set<Role> getRoles() {
         return roles;
@@ -78,5 +112,9 @@ public class User {
 
     public void addRole(Role role) {
         this.roles.add(role);
+    }
+
+    public String getFullName() {
+        return (this.getFirstName() + this.getEmail() + this.getPassword());
     }
 }

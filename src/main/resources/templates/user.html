@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>User</title>
+</head>
+<body>
+<div>
+    <form th:action="@{/logout}" method="post">
+        <p>
+            Welcome <b>[[${#request.userPrincipal.principal.fullName}]] </b>
+            <span sec:authentication="principal.authorities"></span>
+            below you can see information about yourself
+        </p>
+    </form>
+</div>
+
+<table border="1">
+    <thead>
+    <tr></tr>
+    </thead>
+    <tbody>
+    <tr>
+
+        <th>id</th>
+        <th>email</th>
+        <th>firstname</th>
+
+    </tr>
+
+    <td th:text="${user.id}"></td>
+    <td th:text="${user.email}"></td>
+    <td th:text="${user.firstName}"></td>
+
+    </tbody>
+</table>
+<br>
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="logout"/>
+</form>
+</body>
+</html>

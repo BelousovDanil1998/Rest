@@ -1,20 +1,17 @@
 package Belousov.Spring.SpringSecurity.controllers;
 
-import Belousov.Spring.SpringSecurity.Model.Role;
+
 import Belousov.Spring.SpringSecurity.Model.User;
 import Belousov.Spring.SpringSecurity.repositories.RoleRepository;
 import Belousov.Spring.SpringSecurity.repositories.UserRepository;
 import Belousov.Spring.SpringSecurity.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+
 
 @Controller
 @RequestMapping("/")
@@ -58,12 +55,6 @@ public class AdminController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("adminEditUser");
         modelAndView.addObject("user", user);
-//        HashSet<Role> Setroles = new HashSet<>();
-//        Role role_admin = new Role(1,"ADMIN");
-//        Role role_user = new Role(2,"USER");
-//        Setroles.add(role_admin);
-//        Setroles.add(role_user);
-//        modelAndView.addObject("rolelist", Setroles);
         return modelAndView;
     }
 
@@ -77,12 +68,7 @@ public class AdminController {
     ) {
         User user = userService.get(id);
         user.setFirstName(firstName);
-        user.setLastName(lastname);
         user.setEmail(email);
-//        if (!password.isEmpty()) {
-//            user.setPassword(password);
-//        }
-
         userService.save(user);
         return "redirect:/admin";
     }
