@@ -1,6 +1,7 @@
 package Belousov.Spring.SpringSecurity.controllers;
 
-import Belousov.Spring.SpringSecurity.Model.Person;
+
+import Belousov.Spring.SpringSecurity.Model.User;
 import Belousov.Spring.SpringSecurity.services.RegistrationService;
 import Belousov.Spring.SpringSecurity.utill.PersonValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,19 +34,19 @@ public class AuthController {
     }
 
     @GetMapping("/registration")
-    public String registrationPage(@ModelAttribute("person") Person person) {
+    public String registrationPage(@ModelAttribute("person") User user) {
         return "auth/registration";
     }
 
     @PostMapping("/registration")
-    public String performRegistration(@ModelAttribute("person") @Valid Person person,
+    public String performRegistration(@ModelAttribute("person") @Valid User user,
                                       BindingResult bindingResult) {
-        personValidator.validate(person, bindingResult);
+        personValidator.validate(user, bindingResult);
 
         if (bindingResult.hasErrors())
             return "/auth/registration";
 
-        registrationService.register(person);
+        registrationService.register(user);
 
         return "redirect:/auth/login";
     }

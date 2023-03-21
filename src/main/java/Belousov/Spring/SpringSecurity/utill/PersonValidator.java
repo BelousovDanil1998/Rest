@@ -1,8 +1,8 @@
 package Belousov.Spring.SpringSecurity.utill;
 
-import Belousov.Spring.SpringSecurity.Model.Person;
-import Belousov.Spring.SpringSecurity.services.PersonDetailsService;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import Belousov.Spring.SpringSecurity.Model.User;
+import Belousov.Spring.SpringSecurity.services.CustomUserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -15,24 +15,23 @@ import org.springframework.validation.Validator;
 @Component
 public class PersonValidator implements Validator {
 
-    private final PersonDetailsService personDetailsService;
+    private final CustomUserDetailsService customUserDetailsService;
 
-    @Autowired
-    public PersonValidator(PersonDetailsService personDetailsService) {
-        this.personDetailsService = personDetailsService;
+    public PersonValidator(CustomUserDetailsService customUserDetailsService) {
+        this.customUserDetailsService = customUserDetailsService;
     }
 
     @Override
     public boolean supports(Class<?> aClass) {
-        return Person.class.equals(aClass);
+        return User.class.equals(aClass);
     }
 
     @Override
     public void validate(Object o, Errors errors) {
-        Person person = (Person) o;
+        User user = (User) o;
 
         try {
-            personDetailsService.loadUserByUsername(person.getUsername());
+            customUserDetailsService.loadUserByUsername(user.getFirstName() );
         } catch (UsernameNotFoundException ignored) {
             return; // все ок, пользователь не найден
         }

@@ -1,10 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Hello</title>
+    <title>Registration</title>
 </head>
 <body>
-Hello
+<div>
+    <form th:action="@{/logout}" method="post">
+        <p>
+            Welcome <b>[[${#request.userPrincipal.principal.fullName}]] </b>
+            <span sec:authentication="principal.authorities"></span>
+        </p>
+        <input type="submit" value="logout" />
+    </form>
+</div>
 </body>
 </html>

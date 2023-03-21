@@ -1,8 +1,7 @@
 package Belousov.Spring.SpringSecurity.config;
 
 
-import Belousov.Spring.SpringSecurity.services.PersonDetailsService;
-import org.springframework.beans.factory.annotation.Autowired;
+import Belousov.Spring.SpringSecurity.services.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,11 +13,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class securityConfig extends WebSecurityConfigurerAdapter {
 
-    private final PersonDetailsService personDetailsService;
+   private final LoginSuccessHandler loginSuccessHandler;
+    private final CustomUserDetailsService customUserDetailsService;
 
-    @Autowired
-    public securityConfig(PersonDetailsService personDetailsService) {
-        this.personDetailsService = personDetailsService;
+    public securityConfig(LoginSuccessHandler loginSuccessHandler, CustomUserDetailsService customUserDetailsService) {
+        this.loginSuccessHandler = loginSuccessHandler;
+        this.customUserDetailsService = customUserDetailsService;
     }
 
     @Override
@@ -26,14 +26,18 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
         // конфигурируем сам Spring Security
         // конфигурируем авторизацию
        http.csrf().disable()
+                // делаем страницу регистрации недоступной для авторизированных пользователей
                 .authorizeRequests()
-                .antMatchers("/admin").hasRole("ADMIN")
-                .antMatchers("/auth/login", "/auth/registration", "/error").permitAll()
-                .anyRequest().hasAnyRole("USER", "ADMIN")
+                //страницы аутентификаци доступна всем
+                .antMatchers("/auth/login","/auth/registration").permitAll()
+                // защищенные URL
+                .antMatchers("/admin/**").access("hasAuthority('ADMIN')")
+                .antMatchers("/user/**").access("hasAuthority('USER')")
+                .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/auth/login")
-                .loginProcessingUrl("/process_login")
-                .defaultSuccessUrl("/hello", true)
+                .loginProcessingUrl("/login")
+               .successHandler(loginSuccessHandler)
                 .failureUrl("/auth/login?error")
                 .and()
                 .logout()
@@ -43,7 +47,7 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(personDetailsService);
+        auth.userDetailsService(customUserDetailsService);
     }
 
     @Bean
