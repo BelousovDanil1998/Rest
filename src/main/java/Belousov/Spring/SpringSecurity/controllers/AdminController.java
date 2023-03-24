@@ -4,7 +4,7 @@ package Belousov.Spring.SpringSecurity.controllers;
 import Belousov.Spring.SpringSecurity.Model.User;
 import Belousov.Spring.SpringSecurity.repositories.RoleRepository;
 import Belousov.Spring.SpringSecurity.repositories.UserRepository;
-import Belousov.Spring.SpringSecurity.services.UserService;
+import Belousov.Spring.SpringSecurity.services.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -16,14 +16,14 @@ import java.util.List;
 @Controller
 @RequestMapping("/")
 public class AdminController {
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
     private final RoleRepository roleDAO;
 
     private final UserRepository userRepository;
 
     @Autowired
-    public AdminController(UserService userService, RoleRepository roleDAO, UserRepository userRepository) {
-        this.userService = userService;
+    public AdminController(UserServiceImpl userServiceImpl, RoleRepository roleDAO, UserRepository userRepository) {
+        this.userServiceImpl = userServiceImpl;
         this.roleDAO = roleDAO;
         this.userRepository = userRepository;
     }
@@ -31,7 +31,7 @@ public class AdminController {
 
     @GetMapping("/admin")
     public ModelAndView allUsers() {
-        List<User> users = userService.listAll();
+        List<User> users = userServiceImpl.listAll();
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("admin");
         modelAndView.addObject("usersList", users);
@@ -45,13 +45,13 @@ public class AdminController {
 
     @PostMapping(value = "/admin/add")
     public String addUser(@ModelAttribute("user") User user) {
-        userService.save(user);
+        userServiceImpl.save(user);
         return "redirect:/admin";
     }
 
-    @GetMapping(value = "/admin/edit/{id}")
+    @GetMapping (value = "/admin/edit/{id}")
     public ModelAndView editPage(@PathVariable("id") long id) {
-        User user = userService.get(id);
+        User user = userServiceImpl.get(id);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("adminEditUser");
         modelAndView.addObject("user", user);
@@ -59,26 +59,21 @@ public class AdminController {
     }
 
     @PostMapping(value = "/admin/edit")
-    public String editUser(
-            @ModelAttribute("id") Long id,
-            @ModelAttribute("firstName") String firstName,
-            @ModelAttribute("password") String password,
-            @ModelAttribute("lastname") String lastname,
-            @ModelAttribute("email") String email
-    ) {
-        User user = userService.get(id);
-        user.setFirstName(firstName);
-        user.setEmail(email);
-        userService.save(user);
+    public String editUser(@ModelAttribute ("user") User userxmpl ) {
+        User user = userServiceImpl.get(userxmpl.getId());
+        user.setFirstName(userxmpl.getFirstName());
+        user.setEmail(userxmpl.getEmail());
+        userServiceImpl.save(user);
         return "redirect:/admin";
     }
 
+
+
+//     Аннотации DeleteMapping и PatchMapping (как ты рекомендовал) у меня не работают и вылетают ошибки, требуя именно те методы, которые у меня сейчас стоят
     @GetMapping(value = "/admin/delete/{id}")
     public String deleteUser(@PathVariable("id") long id) {
-        User user = userService.get(id);
+        User user = userServiceImpl.get(id);
         userRepository.delete(user);
         return "redirect:/admin";
     }
-
-
 }

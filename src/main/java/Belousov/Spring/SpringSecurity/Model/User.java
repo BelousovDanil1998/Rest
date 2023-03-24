@@ -26,7 +26,7 @@ public class User implements UserDetails {
     private String firstName;
 
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL)
     private Set<Role> roles;
 
     public User(String email, String password, String firstName) {

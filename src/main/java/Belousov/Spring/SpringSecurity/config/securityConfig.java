@@ -1,7 +1,8 @@
 package Belousov.Spring.SpringSecurity.config;
 
 
-import Belousov.Spring.SpringSecurity.services.CustomUserDetailsService;
+
+import Belousov.Spring.SpringSecurity.services.UserServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,11 +15,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class securityConfig extends WebSecurityConfigurerAdapter {
 
     private final LoginSuccessHandler loginSuccessHandler;
-    private final CustomUserDetailsService customUserDetailsService;
+    private final UserServiceImpl userServiceImpl;
 
-    public securityConfig(LoginSuccessHandler loginSuccessHandler, CustomUserDetailsService customUserDetailsService) {
+    public securityConfig(LoginSuccessHandler loginSuccessHandler, UserServiceImpl userServiceImpl) {
         this.loginSuccessHandler = loginSuccessHandler;
-        this.customUserDetailsService = customUserDetailsService;
+        this.userServiceImpl = userServiceImpl;
     }
 
     @Override
@@ -44,7 +45,7 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(customUserDetailsService);
+        auth.userDetailsService(userServiceImpl);
     }
 
     @Bean
