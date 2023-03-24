@@ -28,10 +28,6 @@ public class AuthController {
         this.personValidator = personValidator;
     }
 
-    @GetMapping("/login")
-    public String LoginPage() {
-        return "auth/login";
-    }
 
     @GetMapping("/registration")
     public String registrationPage(@ModelAttribute("person") User user) {

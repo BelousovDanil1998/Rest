@@ -25,22 +25,42 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.csrf().disable()
+        http
+                .csrf().disable()
                 .authorizeRequests()
-                //страницы аутентификации доступна всем
-                .antMatchers("/auth/login", "/auth/registration").permitAll()
-                // защищенные URL
-                .antMatchers("/admin/**").access("hasAuthority('ADMIN')")
+                .antMatchers("/login").permitAll()
+                .antMatchers("/admin/**").hasAuthority("ADMIN")
+                .antMatchers("/user/**").hasAnyAuthority("USER", "ADMIN")
                 .anyRequest().authenticated()
                 .and()
-                .formLogin().loginPage("/auth/login")
-                .loginProcessingUrl("/login")
+                .httpBasic()
+                .and()
+                .formLogin()
+                .loginPage("/login")
+                .usernameParameter("email_address")
+                .passwordParameter("password")
                 .successHandler(loginSuccessHandler)
-                .failureUrl("/auth/login?error")
+                .permitAll()
                 .and()
                 .logout()
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/auth/login");
+                .permitAll();
+
+//        http.csrf().disable()
+//                .authorizeRequests()
+//                //страницы аутентификации доступна всем
+//                .antMatchers("/login", "/auth/registration").permitAll()
+//                // защищенные URL
+//                .antMatchers("/admin/**").access("hasRole('ADMIN')")
+//                .anyRequest().authenticated()
+//                .and()
+//                .formLogin().loginPage("/login")
+//                .loginProcessingUrl("/login")
+//                .successHandler(loginSuccessHandler)
+//                .failureUrl("/login?error")
+//                .and()
+//                .logout()
+//                .logoutUrl("/logout")
+//                .logoutSuccessUrl("/login");
     }
 
     @Override

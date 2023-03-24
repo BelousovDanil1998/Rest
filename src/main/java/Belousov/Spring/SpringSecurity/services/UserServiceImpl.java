@@ -5,6 +5,7 @@ import Belousov.Spring.SpringSecurity.Model.User;
 import Belousov.Spring.SpringSecurity.repositories.RoleRepository;
 import Belousov.Spring.SpringSecurity.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,6 +23,12 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private UserRepository userRepo;
+
+
+
+    public static User getContextUser(){
+        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
 
     public void registerDefaultUser(User user) {
         Role roleUser = roleRepo.findByName("User");
@@ -59,10 +66,6 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        User user = userRepo.findByEmail(s);
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found");
-        }
-        return user;
+        return userRepo.findByEmail(s);
     }
 }
