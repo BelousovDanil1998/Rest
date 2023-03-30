@@ -49,8 +49,6 @@ public class AdminController {
     }
 
 
-
-
     @PostMapping("/new")
     public String createUser(@ModelAttribute("newUser") User user,
                              @ModelAttribute("roleSet") String[] roles) {
@@ -61,21 +59,22 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    @PostMapping("/{id}")
-    public String editUser(@ModelAttribute("user") User userxmpl) {
-        User user = userServiceImpl.get(userxmpl.getId());
-        user.setFirstName(userxmpl.getFirstName());
-        user.setEmail(userxmpl.getEmail());
-        userServiceImpl.save(user);
+    @PostMapping("/edit/{id}")
+    public String editUser(@ModelAttribute("editUser") User user,
+                           @ModelAttribute("roleSet") String[] roles) {
+
+        for (String role : roles) {
+            user.getRoles().add(roleService.getRole(role));
+        }
+        userServiceImpl.updateUser(user);
         return "redirect:/admin";
     }
 
 
     //     Аннотации DeleteMapping и PatchMapping (как ты рекомендовал) у меня не работают и вылетают ошибки, требуя именно те методы, которые у меня сейчас стоят
-    @GetMapping("/{id}")
+    @PostMapping("/delete/{id}")
     public String deleteUser(@PathVariable("id") long id) {
-        User user = userServiceImpl.get(id);
-        userRepository.delete(user);
+        userServiceImpl.deleteUser(id);
         return "redirect:/admin";
     }
 }

@@ -186,8 +186,6 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>First Name</th>
-                                    <th>Last Name</th>
-                                    <th>Age</th>
                                     <th>Email</th>
                                     <th>Role</th>
                                 </tr>
@@ -216,7 +214,7 @@
          aria-labelledby="editModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <form th:method="PATCH" th:action="@{/admin/{id} (id = ${editUser.getId()})}" th:object="${editUser}">
+                <form th:method="PATCH" th:action="@{/admin/edit/{id} (id = ${editUser.getId()})}" th:object="${editUser}">
                     <div class="modal-header">
                         <h5 class="modal-title">Edit user</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -275,7 +273,7 @@
          aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <form th:method="DELETE" th:action="@{/admin/{id} (id = ${deleteUser.getId()})}" th:object="${deleteUser}">
+                <form th:method="DELETE" th:action="@{/admin/delete/{id} (id = ${deleteUser.getId()})}" th:object="${deleteUser}">
                     <div class="modal-header">
                         <h5 class="modal-title">Delete user</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -295,19 +293,10 @@
                                         <input class="form-control" type="text" name="firstName" id="deleteFirstName" th:value="*{id}" disabled>
                                     </label>
                                 </p>
-                                <p>
-                                    <label for="deleteLastName"><strong>Last name</strong>
-                                        <input class="form-control" type="text" name="lastName" id="deleteLastName" th:value="*{id}" disabled>
-                                    </label>
-                                </p>
-                                <p>
-                                    <label for="deleteAge"><strong>Age</strong>
-                                        <input class="form-control" type="number" name="age" id="deleteAge" th:value="*{id}" disabled>
-                                    </label>
-                                </p>
+
                                 <p>
                                     <label for="deleteEmail"><strong>Email</strong>
-                                        <input class="form-control" type="number" name="email" id="deleteEmail" th:value="*{id}" disabled>
+                                        <input class="form-control" type="email" name="email" id="deleteEmail" th:value="*{id}" disabled>
                                     </label>
                                 </p>
                                 <label class="container-fluid col-6" for="deleteRoleSet"><strong>Role</strong>
