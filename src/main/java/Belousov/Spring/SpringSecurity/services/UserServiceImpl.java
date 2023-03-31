@@ -1,8 +1,6 @@
 package Belousov.Spring.SpringSecurity.services;
 
-import Belousov.Spring.SpringSecurity.Model.Role;
 import Belousov.Spring.SpringSecurity.Model.User;
-import Belousov.Spring.SpringSecurity.repositories.RoleRepository;
 import Belousov.Spring.SpringSecurity.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,27 +14,26 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class UserServiceImpl implements UserDetailsService, UserService {
-
-    @Autowired
-    private RoleRepository roleRepo;
-
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private UserRepository userRepo;
+public class UserServiceImpl implements  UserService {
 
 
 
-    public static User getContextUser(){
+
+    private final PasswordEncoder passwordEncoder;
+
+
+    private final UserRepository userRepo;
+
+    public UserServiceImpl(PasswordEncoder passwordEncoder, UserRepository userRepo) {
+        this.passwordEncoder = passwordEncoder;
+        this.userRepo = userRepo;
+    }
+
+
+    public static User getContextUser() {
         return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
-    public void registerDefaultUser(User user) {
-        Role roleUser = roleRepo.findByName("User");
-        user.addRole(roleUser);
-        encodePassword(user);
-        userRepo.save(user);
-    }
 
     @Autowired
     public PasswordEncoder getPasswordEncoder() {
@@ -46,6 +43,12 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Override
     @Transactional
     public void updateUser(User user) {
+        if (user.getPassword() == null) {
+            user.setPassword(userRepo.getById(user.getId()).getPassword());
+        }
+        if (!user.getPassword().equals(userRepo.getById(user.getId()).getPassword())) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         userRepo.save(user);
     }
 
@@ -55,14 +58,17 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     public User get(Long id) {
-        return userRepo.findById(id).get();
+        return userRepo.getById(id);
     }
 
-    public List<Role> listRoles() {
-        return roleRepo.findAll();
+    public User getUserByUsername(String username) {
+        return userRepo.findByEmail(username);
     }
 
+
+    @Transactional
     public void save(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepo.save(user);
     }
 
@@ -71,10 +77,6 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         user.setPassword(encodedPassword);
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        return userRepo.findByEmail(s);
-    }
 
     @Override
     @Transactional

@@ -2,12 +2,13 @@ package Belousov.Spring.SpringSecurity.config;
 
 
 
-import Belousov.Spring.SpringSecurity.services.UserServiceImpl;
+import Belousov.Spring.SpringSecurity.services.UserDetailServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -15,11 +16,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class securityConfig extends WebSecurityConfigurerAdapter {
 
     private final LoginSuccessHandler loginSuccessHandler;
-    private final UserServiceImpl userServiceImpl;
+    private final UserDetailServiceImpl userServiceImpl;
 
-    public securityConfig(LoginSuccessHandler loginSuccessHandler, UserServiceImpl userServiceImpl) {
+    public securityConfig(LoginSuccessHandler loginSuccessHandler, UserDetailServiceImpl userServiceImpl) {
         this.loginSuccessHandler = loginSuccessHandler;
         this.userServiceImpl = userServiceImpl;
+        ;
     }
 
     @Override
@@ -29,8 +31,8 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/login").permitAll()
-                .antMatchers("/admin/**").hasAuthority("ADMIN")
-                .antMatchers("/user/**").hasAnyAuthority("USER", "ADMIN")
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic()
@@ -45,22 +47,7 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .permitAll();
 
-//        http.csrf().disable()
-//                .authorizeRequests()
-//                //страницы аутентификации доступна всем
-//                .antMatchers("/login", "/auth/registration").permitAll()
-//                // защищенные URL
-//                .antMatchers("/admin/**").access("hasRole('ADMIN')")
-//                .anyRequest().authenticated()
-//                .and()
-//                .formLogin().loginPage("/login")
-//                .loginProcessingUrl("/login")
-//                .successHandler(loginSuccessHandler)
-//                .failureUrl("/login?error")
-//                .and()
-//                .logout()
-//                .logoutUrl("/logout")
-//                .logoutSuccessUrl("/login");
+
     }
 
     @Override
@@ -69,7 +56,7 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public PasswordEncoder getPasswordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(5);
     }
 }

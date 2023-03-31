@@ -5,12 +5,9 @@ import Belousov.Spring.SpringSecurity.Model.Role;
 import Belousov.Spring.SpringSecurity.Model.User;
 import Belousov.Spring.SpringSecurity.services.RoleService;
 import Belousov.Spring.SpringSecurity.services.UserServiceImpl;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import java.security.Principal;
 
 @Controller
 public class UserController {
@@ -29,7 +26,7 @@ public class UserController {
 
         User user = UserServiceImpl.getContextUser();
         StringBuilder roles = new StringBuilder();
-        for(Role role : user.getRoles()){
+        for(Role role : user.getRoleSet()){
             roles.append(role.toString());
             roles.append(" ");
         }

@@ -1,6 +1,8 @@
 package Belousov.Spring.SpringSecurity.Model;
 
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -27,8 +29,14 @@ public class User implements UserDetails {
     private String firstName;
 
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    private Set<Role> roles;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @Fetch(FetchMode.JOIN)
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "roles_id")
+    )
+    private Set<Role> roleSet;
 
     public User(String email, String password, String firstName) {
         this.email = email;
@@ -58,7 +66,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles;
+        return roleSet;
     }
 
     public String getPassword() {
@@ -103,20 +111,19 @@ public class User implements UserDetails {
     }
 
 
-    public Set<Role> getRoles() {
-        if (roles == null) {
-            roles = new HashSet<>();
+    public Set<Role> getRoleSet() {
+        if (roleSet == null) {
+            roleSet = new HashSet<>();
         }
-        return roles;
+        return roleSet;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+
+
+    public void setRoleSet(Set<Role> roles) {
+        this.roleSet = roles;
     }
 
-    public void addRole(Role role) {
-        this.roles.add(role);
-    }
 
     public String getFullName() {
         return (this.getFirstName() + this.getEmail() + this.getPassword());

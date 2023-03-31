@@ -2,55 +2,42 @@ package Belousov.Spring.SpringSecurity.testCreation;
 
 import Belousov.Spring.SpringSecurity.Model.Role;
 import Belousov.Spring.SpringSecurity.Model.User;
-import Belousov.Spring.SpringSecurity.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
+import Belousov.Spring.SpringSecurity.services.RoleService;
+import Belousov.Spring.SpringSecurity.services.UserService;
 import org.springframework.stereotype.Component;
 
-import java.util.HashSet;
+import javax.annotation.PostConstruct;
 
 @Component
-public class DataLoader implements CommandLineRunner {
+public class DataLoader  {
 
-    @Autowired
-    UserRepository userRepository;
-    private static User user;
-    private static User admin;
 
-    private static User userAndAdmin;
+   private final UserService userService;
 
-    public void run(String... args) throws Exception {
-        User user = DataLoader.addUser();
-        userRepository.save(user);
-        User admin = DataLoader.addAdmin();
-        userRepository.save(admin);
-        User userAndAdmin = DataLoader.addUserAndAdmin();
-        userRepository.save(userAndAdmin);
+   private final RoleService roleService;
+
+    public DataLoader(UserService userService, RoleService roleService) {
+        this.userService = userService;
+        this.roleService = roleService;
     }
 
-    public static User addUser() {
-        HashSet<Role> roleHashSet = new HashSet<>();
-        roleHashSet.add(new Role("USER"));
-        user = new User("12@12", "12345", "Danil");
-        user.setRoles(roleHashSet);
-        return user;
+    @PostConstruct
+    public void init() {
+        Role roleAdmin = new Role("ROLE_ADMIN");
+        roleService.addRole(roleAdmin);
+        Role roleUser = new Role("ROLE_USER");
+        roleService.addRole(roleUser);
+
+        User user = new User("131@131","12345","Danil");
+        user.getRoleSet().add(roleUser);
+
+        User admin = new User("132@132","123","Ivan");
+        admin.getRoleSet().add(roleAdmin);
+        admin.getRoleSet().add(roleUser);
+
+        userService.save(admin);
+        userService.save(user);
     }
 
-    public static User addAdmin() {
-        HashSet<Role> roleHashSet = new HashSet<>();
-        roleHashSet.add(new Role("ADMIN"));
-        admin = new User("13@13", "135", "ivan");
-        admin.setRoles(roleHashSet);
-        return admin;
-    }
-
-    public static User addUserAndAdmin() {
-        HashSet<Role> roleHashSet = new HashSet<>();
-        roleHashSet.add(new Role("ADMIN"));
-        roleHashSet.add(new Role("USER"));
-        userAndAdmin = new User("25@25", "12480", "Vsemogushiy");
-        userAndAdmin.setRoles(roleHashSet);
-        return userAndAdmin;
-    }
 
 }
