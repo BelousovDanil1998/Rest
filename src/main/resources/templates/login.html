@@ -21,22 +21,22 @@
         integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2"
         crossorigin="anonymous"></script>
 
-<div class="container">
-    <div class="row">
-        <div class="col-lg-4 offset-4">
-            <form method="post" class="form-signin" action="/login">
-                <h2 class="form-signin-heading"><strong>Please sign in</strong></h2>
-                <h1></h1>
-                <input type="login" name="email_address" class="form-control" placeholder="Email address" required
-                       autofocus>
-                <input type="password" name="password" class="form-control" placeholder="Password" required>
-                <h1></h1>
-                <button type="submit" class="btn btn-lg btn-primary btn-block form-control">Sign in</button>
-            </form>
-        </div>
-    </div>
-</div>
+<section class="container-fluid">
+    <section class="row justify-content-center">
+        <form method="post" class="form-signin" action="/login">
+           <h3> <strong> Please sign in</strong> </h3>
+            <div class="mb-0">
+                <input type="login" name="email_address" class="form-control"  placeholder="Email address" autofocus>
+            </div>
+            <div class="mb-0">
+                <input type="password" name="password" class="form-control"  placeholder="Password" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+        </form>
+    </section>
 
+
+</section>
 
 
 </body>

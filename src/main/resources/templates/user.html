@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml"
-      xmlns="http://www.w3.org/1999/html">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
 <head>
     <meta charset="UTF-8">
     <title>User</title>
@@ -20,85 +20,51 @@
         integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2"
         crossorigin="anonymous"></script>
 
-<header>
-    <div class="container-fluid" style="padding: 0">
-        <div class="row">
-            <div class="col-12">
-                <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-                    <!-- Navbar content -->
-                    <div class="collapse navbar-collapse" id="user">
-                        <ul class="navbar-nav mr-auto">
-                            <a class="navbar-brand font-weight-bold" th:text="${thisUser.getUsername()}"></a>
-                            <a class="navbar-brand">with roles: </a>
-                            <a class="navbar-brand" th:text="${thisUserRoles}"></a>
-                        </ul>
-                        <ul class="navbar-nav">
-                            <li class="nav-item">
-                                <a class="nav-link text-right" href="/logout">Logout</a>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
-            </div>
-        </div>
+<nav class="navbar navbar-dark bg-dark" style="padding: 0 10px;">
+    <div class="d-flex flex-row" style="padding-top: 13px">
+        <strong class="text-light bg-dark" th:text="${thisUser.getUsername()}"> </strong>
+        <p class="text-light bg-dark"> &nbsp; with roles: &nbsp;</p>
+        <p class="text-light bg-dark" th:text="${thisUserRoles}"></p>
     </div>
-</header>
-
+    <a href="/logout" class="text-secondary">Logout</a>
+</nav>
 
 <div class="container-fluid">
     <div class="row">
-
-        <!--Панель слева-->
-
-        <div class="col-2" style="padding: 0; padding-top: 15px">
-            <ul class="nav nav-pills flex-column">
-                <li class="nav-item">
-                    <a class="nav-link active" data-toggle="tab" href="#userPanel">User</a>
-                </li>
-            </ul>
+        <div class="col-2" style="padding: 15px 0 0;">
+            <nav class="nav nav-pills flex-column">
+                <a class="nav-link active" data-toggle="tab" href="#">User</a>
+            </nav>
         </div>
 
-        <!--Панель справа-->
-
         <div class="col-10 bg-light">
-            <div class="tab-content" style="padding-top: 15px; height: 100vh">
-
-                <!--Панель пользователя-->
-
-                <div class="tab-pane fade show active" id="userPanel">
-                    <h2>User information-page</h2>
-                    <div class="card">
-                        <h5 class="card-header">About user</h5>
-                        <div class="card-body text-center">
-                            <table class="table table-striped">
-                                <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>First Name</th>
-                                    <th>Email</th>
-                                    <th>Role</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td th:text="${thisUser.getId()}">ID</td>
-                                    <td th:text="${thisUser.getFirstName()}">First Name</td>
-                                    <td th:text="${thisUser.getEmail()}">Email</td>
-                                    <td th:text="${thisUser.getRoleSet()}">Role</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+            <div class="tab-content" style="padding-top: 15px; height: 95vh">
+                <h2><strong> User information-page</strong></h2>
+                <div class="card">
+                    <h5 class="card-header">About user</h5>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">First Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Role</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td th:text="${thisUser.getId()}"></td>
+                            <td th:text="${thisUser.getFirstName()}"></td>
+                            <td th:text="${thisUser.getEmail()}"></td>
+                            <td th:text="${thisUserRoles}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-
-
-
 
 </body>
 </html>
