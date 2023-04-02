@@ -1,7 +1,6 @@
 package Belousov.Spring.SpringSecurity.config;
 
 
-
 import Belousov.Spring.SpringSecurity.services.UserDetailServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -46,8 +45,6 @@ public class securityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 .permitAll();
-
-
     }
 
     @Override

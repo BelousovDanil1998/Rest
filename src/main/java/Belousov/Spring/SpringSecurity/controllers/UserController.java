@@ -26,7 +26,7 @@ public class UserController {
 
         User user = UserServiceImpl.getContextUser();
         StringBuilder roles = new StringBuilder();
-        for(Role role : user.getRoleSet()){
+        for (Role role : user.getRoleSet()) {
             roles.append(role.toString());
             roles.append(" ");
         }

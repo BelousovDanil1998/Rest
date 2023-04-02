@@ -9,12 +9,12 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 
 @Component
-public class DataLoader  {
+public class DataLoader {
 
 
-   private final UserService userService;
+    private final UserService userService;
 
-   private final RoleService roleService;
+    private final RoleService roleService;
 
     public DataLoader(UserService userService, RoleService roleService) {
         this.userService = userService;
@@ -28,10 +28,10 @@ public class DataLoader  {
         Role roleUser = new Role("ROLE_USER");
         roleService.addRole(roleUser);
 
-        User user = new User("131@131","12345","Danil");
+        User user = new User("131@131", "12345", "Danil");
         user.getRoleSet().add(roleUser);
 
-        User admin = new User("132@132","123","Ivan");
+        User admin = new User("132@132", "123", "Ivan");
         admin.getRoleSet().add(roleAdmin);
         admin.getRoleSet().add(roleUser);
 

@@ -1,6 +1,7 @@
 package Belousov.Spring.SpringSecurity.Model;
 
 import org.springframework.security.core.GrantedAuthority;
+
 import javax.persistence.*;
 
 
@@ -11,7 +12,7 @@ public class Role implements GrantedAuthority {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "role",nullable = false, unique = true)
+    @Column(name = "role", nullable = false, unique = true)
     private String name;
 
 
@@ -43,6 +44,7 @@ public class Role implements GrantedAuthority {
     public String toString() {
         return name.substring(5, name.length());
     }
+
     @Override
     public String getAuthority() {
         return name;

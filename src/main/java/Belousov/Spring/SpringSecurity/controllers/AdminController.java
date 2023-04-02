@@ -13,13 +13,11 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 
 
-
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
     private final UserServiceImpl userServiceImpl;
     private final RoleService roleService;
-
 
 
     @Autowired
@@ -46,24 +44,6 @@ public class AdminController {
         return "admin";
     }
 
-//    @GetMapping()
-//    public String getUser(Model model) {
-//
-//        User user = UserServiceImpl.getContextUser();
-//        StringBuilder roles = new StringBuilder();
-//        for (Role role : user.getRoles()) {
-//            roles.append(role.toString());
-//            roles.append(" ");
-//        }
-//        List<User> users = userServiceImpl.listAll();
-//        model.addAttribute("usersList", users);
-//        model.addAttribute("thisUserRoles", roles);
-//        model.addAttribute("thisUser", user);
-//        model.addAttribute("newUser", new User());
-//        model.addAttribute("roles", roleService.getRoles());
-//        return "admin";
-//    }
-
 
     @PostMapping("/new")
     public String createUser(@ModelAttribute("newUser") User user,
@@ -85,9 +65,6 @@ public class AdminController {
         userServiceImpl.updateUser(user);
         return "redirect:/admin";
     }
-
-
-
 
 
     @DeleteMapping("/{id}")

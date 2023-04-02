@@ -22,10 +22,10 @@ public class User implements UserDetails {
     @Column(unique = true, length = 45)
     private String email;
 
-    @Column( length = 64)
+    @Column(length = 64)
     private String password;
 
-    @Column( length = 20)
+    @Column(length = 20)
     private String firstName;
 
 
@@ -117,7 +117,6 @@ public class User implements UserDetails {
         }
         return roleSet;
     }
-
 
 
     public void setRoleSet(Set<Role> roles) {
