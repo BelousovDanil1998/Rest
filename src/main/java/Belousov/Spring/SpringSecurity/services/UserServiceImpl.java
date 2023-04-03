@@ -1,5 +1,6 @@
 package Belousov.Spring.SpringSecurity.services;
 
+import Belousov.Spring.SpringSecurity.Model.Role;
 import Belousov.Spring.SpringSecurity.Model.User;
 import Belousov.Spring.SpringSecurity.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +29,24 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    public static User getContextUser() {
+    public User getContextUser() {
         return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
+    public StringBuilder getContextUserRoles(User user) {
+        StringBuilder roles = new StringBuilder();
+        for (Role role : user.getRoleSet()) {
+            roles.append(role.toString());
+            roles.append(" ");
+        }
+        return roles;
+    }
+
+    public void addRoleSetInContextUser(String[] roles, User user, RoleService roleService) {
+        for (String role : roles) {
+            user.getRoleSet().add(roleService.getRole(role));
+        }
+    }
 
     @Autowired
     public PasswordEncoder getPasswordEncoder() {

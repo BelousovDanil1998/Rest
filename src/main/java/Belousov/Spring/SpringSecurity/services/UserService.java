@@ -16,4 +16,11 @@ public interface UserService {
 
     void updateUser(User user);
 
+    User getContextUser();
+
+    StringBuilder getContextUserRoles(User user);
+
+    User getUserByUsername(String username);
+
+    void addRoleSetInContextUser(String[] roles, User user,RoleService roleService);
 }

@@ -29,7 +29,7 @@ public class User implements UserDetails {
     private String firstName;
 
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @ManyToMany(cascade = CascadeType.MERGE)
     @Fetch(FetchMode.JOIN)
     @JoinTable(
             name = "users_roles",
