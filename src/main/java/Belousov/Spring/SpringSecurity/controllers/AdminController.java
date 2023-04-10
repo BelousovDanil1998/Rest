@@ -15,8 +15,8 @@ import java.security.Principal;
 
 
 @Controller
-@RequestMapping("/admin")
 public class AdminController {
+
     private final UserService userService;
     private final RoleService roleService;
 
@@ -28,8 +28,8 @@ public class AdminController {
     }
 
 
-    @GetMapping()
-    public String adminPage(Model model, Principal principal) {
+    @GetMapping("/admin")
+    public String getAdminPage(Model model, Principal principal) {
         User user = userService.getContextUser();
         StringBuilder roles = userService.getContextUserRoles(user);
         model.addAttribute("thisUserRoles", roles);
@@ -41,26 +41,7 @@ public class AdminController {
     }
 
 
-    @PostMapping("/new")
-    public String createUser(@ModelAttribute("newUser") User user,
-                             @ModelAttribute("roleSet") String[] roles) {
-        userService.addRoleSetInContextUser(roles,user,roleService);
-        userService.save(user);
-        return "redirect:/admin";
-    }
-
-    @PatchMapping("/{id}")
-    public String editUser(@ModelAttribute("editUser") User user,
-                           @ModelAttribute("roleSet") String[] roles) {
-        userService.addRoleSetInContextUser(roles, user, roleService);
-        userService.updateUser(user);
-        return "redirect:/admin";
-    }
 
 
-    @DeleteMapping("/{id}")
-    public String deleteUser(@PathVariable("id") long id) {
-        userService.deleteUser(id);
-        return "redirect:/admin";
-    }
+
 }

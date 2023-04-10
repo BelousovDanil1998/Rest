@@ -1,5 +1,6 @@
 package Belousov.Spring.SpringSecurity.Model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;

@@ -3,12 +3,13 @@ package Belousov.Spring.SpringSecurity.services;
 import Belousov.Spring.SpringSecurity.Model.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
 
     void save(User user);
 
-    User get(Long id);
+    Optional<User> get(Long id);
 
     List<User> listAll();
 

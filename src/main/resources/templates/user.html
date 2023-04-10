@@ -51,20 +51,16 @@
                             <th scope="col">Role</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <tr>
-                            <td th:text="${thisUser.getId()}"></td>
-                            <td th:text="${thisUser.getFirstName()}"></td>
-                            <td th:text="${thisUser.getEmail()}"></td>
-                            <td th:text="${thisUserRoles}"></td>
-                        </tr>
-                        </tbody>
+                        <tbody id="user_info"></tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script src="/listRoles.js"></script>
+<script src="/showUserInfo.js"></script>
 
 </body>
 </html>

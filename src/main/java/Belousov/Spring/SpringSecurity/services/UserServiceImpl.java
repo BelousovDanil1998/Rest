@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -70,8 +71,8 @@ public class UserServiceImpl implements UserService {
         return userRepo.findAll();
     }
 
-    public User get(Long id) {
-        return userRepo.getById(id);
+    public Optional<User> get(Long id) {
+        return Optional.of(userRepo.getById(id));
     }
 
     public User getUserByUsername(String username) {

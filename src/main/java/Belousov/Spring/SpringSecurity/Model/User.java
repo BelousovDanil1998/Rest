@@ -1,6 +1,7 @@
 package Belousov.Spring.SpringSecurity.Model;
 
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
