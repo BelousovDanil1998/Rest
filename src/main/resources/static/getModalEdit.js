@@ -8,10 +8,10 @@ function getModalEdit(id) {
             let userSelect = "";
 
             for (let i = 0; i < user.roleSet.length; i++) {
-                if (user.roleSet[i].Name === "ROLE_ADMIN") {
+                if (user.roleSet[i].name === "ADMIN") {
                     adminSelect = "selected";
                 }
-                if (user.roleSet[i].Name === "ROLE_USER") {
+                if (user.roleSet[i].name === "USER") {
                     userSelect = "selected";
                 }
             }
@@ -42,7 +42,7 @@ function getModalEdit(id) {
                 '                    <p>' +
                 '                        <label>First name</label>' +
                 '                        <input class="form-control form-control-sm" type="text"' +
-                '                               id="editName" value="' + user.firstName + '"' +
+                '                               id="editFirstName" value="' + user.firstName + '"' +
                 '                               placeholder="First name" required>' +
                 '                    </p>' +
                 '                    <p>' +
@@ -52,13 +52,8 @@ function getModalEdit(id) {
                 '                               placeholder="Email" required>' +
                 '                    </p>' +
                 '                    <p>' +
-                '                        <label>Password</label>' +
-                '                        <input class="form-control form-control-sm" type="password"' +
-                '                               id="editPassword" placeholder="Password">' +
-                '                    </p>' +
-                '                    <p>' +
                 '                        <label>Role</label>' +
-                '                        <select id="editRoles" name="roles" multiple size="2" required ' +
+                '                        <select id="editRoleSet" name="roleSet" multiple size="2" required ' +
                 '                               class="form-control form-control-sm">' +
                 '                            <option value="ADMIN"' + adminSelect + '>ADMIN</option>' +
                 '                            <option value="USER"' + userSelect + '>USER</option>' +
@@ -81,48 +76,5 @@ function getModalEdit(id) {
         });
 }
 
-
-function editUser() {
-
-    let form = window.formEditUser.editRoles;
-    let new_Roles = "";
-
-    let rolesList = document.createElement('ul');
-
-    for (let i = 0; i < form.length; i++) {
-        let option = form.options[i];
-        let role = document.createElement('li');
-        if (option.selected) {
-            new_Roles = new_Roles.concat(option.value + (i !== (form.length - 1) ? "," : ""));
-
-            role.textContent = option.value + " ";
-            rolesList.appendChild(role);
-        }
-    }
-
-    let id = window.formEditUser.editID.value;
-
-    fetch('http://localhost:8080/update', {
-        method: 'PUT',
-        body: JSON.stringify({
-            id: window.formEditUser.editID.value,
-            name: window.formEditUser.editFirstName.value,
-            email: window.formEditUser.editEmail.value,
-            password: window.formEditUser.editPassword.value,
-            roles: new_Roles
-        }),
-        headers: {"Content-type": "application/json; charset=UTF-8"}
-    })
-        .then(response => {
-            $('#' + id).replaceWith('<tr id=' + id + '>' +
-                '<td>' + id + '</td>' +
-                '<td>' + window.formEditUser.editFirstName.value + '</td>' +
-                '<td>' + window.formEditUser.editEmail.value + '</td>' +
-                '<td>' + rolesList.textContent + '</td>' +
-                '<td> <button type="button" onclick="getModalEdit(' + id + ')" class="btn btn-primary btn-sm">Edit</button> </td>' +
-                '<td> <button type="button" onclick="modalDelete(' + id + ')" class="btn btn-danger btn-sm">Delete</button> </td>' +
-                '</tr>');
-        });
-}
 
 

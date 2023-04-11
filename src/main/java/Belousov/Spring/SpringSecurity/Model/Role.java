@@ -1,9 +1,11 @@
 package Belousov.Spring.SpringSecurity.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
+import java.util.Set;
 
 
 @Entity
@@ -13,7 +15,7 @@ public class Role implements GrantedAuthority {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "role", nullable = false, unique = true)
+    @Column
     private String name;
 
 
@@ -43,7 +45,7 @@ public class Role implements GrantedAuthority {
 
     @Override
     public String toString() {
-        return name.substring(5, name.length());
+        return name;
     }
 
     @Override

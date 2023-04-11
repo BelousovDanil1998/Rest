@@ -13,21 +13,23 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "users")
 public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, length = 45)
+    @Column
     private String email;
 
-    @Column(length = 64)
+
+    @Column
     private String password;
 
-    @Column(length = 20)
+
+    @Column
     private String firstName;
+
 
 
     @ManyToMany(cascade = CascadeType.MERGE)

@@ -23,9 +23,9 @@ public class DataLoader {
 
     @PostConstruct
     public void init() {
-        Role roleAdmin = new Role("ROLE_ADMIN");
+        Role roleAdmin = new Role("ADMIN");
         roleService.addRole(roleAdmin);
-        Role roleUser = new Role("ROLE_USER");
+        Role roleUser = new Role("USER");
         roleService.addRole(roleUser);
 
         User user = new User("131@131", "12345", "Danil");
