@@ -20,11 +20,10 @@
         integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2"
         crossorigin="anonymous"></script>
 
-<nav class="navbar navbar-dark bg-dark" style="padding: 0 10px;">
-    <div class="d-flex flex-row" style="padding-top: 13px">
-        <strong class="text-light bg-dark" th:text="${thisUser.getUsername()}"> </strong>
-        <p class="text-light bg-dark"> &nbsp; with roles: &nbsp;</p>
-        <p class="text-light bg-dark" th:text="${thisUserRoles}"></p>
+<nav class="navbar navbar-dark bg-dark" style="padding: 0px;">
+    <div class="d-flex flex-row" style="padding-top: 0px">
+        <div id="header_email" class="p-2 text-white font-weight-bold"></div>
+        <div id="header_roles" class="p-2 w-100 text-white"></div>
     </div>
     <a href="/logout" class="text-secondary">Logout</a>
 </nav>
@@ -61,6 +60,7 @@
 
 <script src="/listRoles.js"></script>
 <script src="/showUserInfo.js"></script>
+<script src="/showHeader.js"></script>
 
 </body>
 </html>

@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import Belousov.Spring.SpringSecurity.services.RoleService;
 import Belousov.Spring.SpringSecurity.services.UserService;
-
 import java.util.Optional;
 
 

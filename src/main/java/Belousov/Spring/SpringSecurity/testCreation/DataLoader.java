@@ -7,6 +7,8 @@ import Belousov.Spring.SpringSecurity.services.UserService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.HashSet;
+import java.util.Set;
 
 @Component
 public class DataLoader {
@@ -23,19 +25,15 @@ public class DataLoader {
 
     @PostConstruct
     public void init() {
-        Role roleAdmin = new Role("ADMIN");
-        roleService.addRole(roleAdmin);
-        Role roleUser = new Role("USER");
-        roleService.addRole(roleUser);
-
-        User user = new User("131@131", "12345", "Danil");
-        user.getRoleSet().add(roleUser);
-
-        User admin = new User("132@132", "123", "Ivan");
-        admin.getRoleSet().add(roleAdmin);
-        admin.getRoleSet().add(roleUser);
-
+        Set<Role> allRoles = new HashSet<>();
+        allRoles.add(new Role("ADMIN"));
+        allRoles.add(new Role("USER"));
+        roleService.createRoles(allRoles);
+        User admin = new User("Danil@dan","111", "Danil");
+        admin.setRoleSet("ADMIN, USER");
         userService.save(admin);
+        User user = new User("user@user","222","Oleg");
+        user.setRoleSet("USER");
         userService.save(user);
     }
 

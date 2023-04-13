@@ -32,7 +32,7 @@ public class User implements UserDetails {
 
 
 
-    @ManyToMany(cascade = CascadeType.MERGE)
+    @ManyToMany(cascade=CascadeType.ALL)
     @Fetch(FetchMode.JOIN)
     @JoinTable(
             name = "users_roles",
@@ -41,10 +41,17 @@ public class User implements UserDetails {
     )
     private Set<Role> roleSet;
 
+
     public User(String email, String password, String firstName) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
+    }
+
+
+    public User(String email, String password, String firstName, Set<Role> roleSet) {
+        this(firstName, email, password);
+        this.roleSet = roleSet;
     }
 
     public User() {
@@ -115,19 +122,33 @@ public class User implements UserDetails {
 
 
     public Set<Role> getRoleSet() {
-        if (roleSet == null) {
-            roleSet = new HashSet<>();
-        }
         return roleSet;
     }
 
+    @Override
+    public String toString() {
+        String rolesString = "";
+        for (Role role: this.roleSet) {
+            rolesString += role.getName();
+        }
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", roleSet=" + rolesString +
+                '}';
+    }
 
-    public void setRoleSet(Set<Role> roles) {
-        this.roleSet = roles;
+    public void setRoleSet(String roleSet) {
+        this.roleSet = new HashSet<>();
+        if (roleSet.contains("ADMIN")) {
+            this.roleSet.add(new Role("ADMIN"));
+        }
+        if (roleSet.contains("USER")) {
+            this.roleSet.add(new Role("USER"));
+        }
     }
 
 
-    public String getFullName() {
-        return (this.getFirstName() + this.getEmail() + this.getPassword());
-    }
 }
