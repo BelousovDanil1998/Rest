@@ -52,6 +52,11 @@ function getModalEdit(id) {
                 '                               placeholder="Email" required>' +
                 '                    </p>' +
                 '                    <p>' +
+                '                        <label>Password</label>' +
+                '                        <input class="form-control form-control-sm" type="password"' +
+                '                               id="editPassword" placeholder="Password">' +
+                '                    </p>' +
+                '                    <p>' +
                 '                        <label>Role</label>' +
                 '                        <select id="editRoleSet" name="roleSet" multiple size="2" required ' +
                 '                               class="form-control form-control-sm">' +
@@ -103,6 +108,7 @@ function editUser() {
             id: window.formEditUser.editID.value,
             firstName: window.formEditUser.editFirstName.value,
             email: window.formEditUser.editEmail.value,
+            password: window.formEditUser.editPassword.value,
             roleSet: new_Roles
         }),
         headers: {"Content-type": "application/json; charset=UTF-8"}

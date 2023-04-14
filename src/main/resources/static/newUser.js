@@ -41,8 +41,8 @@ function newUser() {
             window.formNewUser.newRoles.value = "";
 
 
-            //Я бы хотел что бы после добавления пользователя перенаправляло на главную страничку, но по условиям задачи страничка не должна перезагружаться
-            // window.location.href = "http://localhost:8080/admin";
+
+            window.location.href = "http://localhost:8080/admin";
 
 
         });
